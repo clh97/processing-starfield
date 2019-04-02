@@ -1,21 +1,36 @@
-int STARS_COUNT = 500;
+int ENTITY_COUNT = 5120;
 
-SkyEntity entities[] = new SkyEntity[STARS_COUNT];
-int randomIndexes[] = new int[8];
+SkyEntity entities[] = new SkyEntity[ENTITY_COUNT];
+int randomPlanets[] = new int[32];
+int randomMicrostars[] = new int[64];
 
 void setup() {
-  size(1366, 768);
-  for(int i = 0; i < 8; i++) {
-    int randomNumber = floor(random(0, STARS_COUNT));
-    randomIndexes[i] = randomNumber;
+  size(1360, 768, P3D);
+  /* random planets gen */
+  for(int i = 0; i < randomPlanets.length; i++) {
+    int randomNumber = floor(random(0, ENTITY_COUNT));
+    randomPlanets[i] = randomNumber;
   }
-  for(int i = 0; i < entities.length; i++) {
-    entities[i] = new SkyEntity(1.0);
+  /* random microstar gen */
+  for(int i = 0; i < randomMicrostars.length; i++) {
+    int randomNumber = floor(random(0, ENTITY_COUNT));
+    randomMicrostars[i] = randomNumber;
   }
   
-  for(int j = 0; j < randomIndexes.length; j++) {
-      entities[randomIndexes[j]] = new SkyEntity(3.0);
-    }
+  /* MICROSTARS */
+  for(int i = 0; i < entities.length; i++) {
+    entities[i] = new SkyEntity(1, EntityType.MICROSTAR);
+  }
+  
+  /* STARS */
+  for(int j = 0; j < randomMicrostars.length; j++) {
+      entities[randomMicrostars[j]] = new SkyEntity(random(1, 2), EntityType.STAR);
+  }
+  
+  /* PLANETS */
+  for(int j = 0; j < randomPlanets.length; j++) {
+      entities[randomPlanets[j]] = new SkyEntity(random(4, 16), EntityType.PLANET);
+  }
 }
   
 void draw() {
@@ -24,5 +39,5 @@ void draw() {
   for(int i = 0; i < entities.length; i++) {
     entities[i].update();
     entities[i].show();  
-  }
+  }  
 }
